@@ -1,0 +1,35 @@
+.Order {
+    display: inline-block;
+    width: 50%;
+    margin: 20px 20px 20px 25%;
+    border: 2px solid #d58c05;
+    border-radius: 20px;
+    transition-duration: 1s;
+    font-size: 110%;
+}
+
+.Order:hover {
+    animation: shadow 1s infinite alternate;
+    transform: scale(1.1);
+}
+
+.OrderRow{
+    display: block;
+    height: 30px;
+    margin: 10px;
+}
+
+.Order span {
+    min-height: 20px;
+    display: inline-flex;
+    vertical-align: top;
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}

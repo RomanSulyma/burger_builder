@@ -1,0 +1,23 @@
+.ErrorHandler {
+    margin-top: 300px;
+    margin-left: 30%;
+    height: 13%;
+    width: 40%;
+    border: 3px solid #d58c05;
+    border-radius: 200px;
+    animation: shadow 1s infinite alternate;
+}
+
+.ErrorHandler p {
+    text-align: center;
+    font-size: calc(0.9em + 0.9vw);
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}

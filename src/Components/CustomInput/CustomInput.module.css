@@ -1,0 +1,61 @@
+.CustomInput {
+    display: block;
+    width: 50%;
+    height: 30px;
+    margin: 10px 10px 0 25%;
+    border: 1px solid #d58c05;
+    padding-left: 10px;
+    border-radius: 20px;
+}
+
+.CustomInputInvalid {
+    border: 1px solid red;
+}
+
+.CustomInput:focus {
+    animation: shadow 1s infinite alternate;
+    outline: none;
+}
+
+.CustomInputInvalid:focus {
+    animation: shadowInvalid 1s infinite alternate;
+    outline: none;
+}
+
+.Error {
+    transition-duration: 0.5s;
+    display: block;
+    padding-left: 10px;
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+    border-bottom: 2px solid #d58c05;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    opacity: 0;
+    height: 0;
+}
+
+.ErrorActive {
+    transition-duration: 0.5s;
+    opacity: 1;
+    height: 20px;
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}
+
+@keyframes shadowInvalid {
+    from {
+        box-shadow: 0 0 5px 2px #d51400;
+    }
+    to {
+        box-shadow: 0 0 9px 3px red;
+    }
+}

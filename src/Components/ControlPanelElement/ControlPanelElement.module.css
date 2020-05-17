@@ -1,0 +1,51 @@
+.PanelElement {
+    display: inline-block;
+    margin-left: 12.5%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border: 2px solid transparent;
+    width: 10%;
+    text-align: center;
+    transition-duration: 0.5s;
+}
+
+.PanelElement:hover {
+    border: 2px solid #d58c05;
+    border-radius: 10%;
+    animation: shadow 1s infinite alternate;
+}
+
+.PanelElement p {
+    padding-bottom: 5px;
+    border-bottom: 2px solid transparent;
+    border-radius: 10px;
+    transition-duration: 0.5s;
+}
+
+.PanelElement:hover p {
+    border-bottom: 2px solid #d58c05;
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}
+
+.ButtonIngridient {
+    width: 50%;
+    margin: auto;
+    border: 2px solid transparent;
+    border-bottom: 2px solid #d58c05;
+    border-top: 2px solid #d58c05;
+    border-radius: 20px;
+    transition-duration: 0.5s;
+}
+
+.ButtonIngridient:hover {
+    border: 2px solid #d58c05;
+}

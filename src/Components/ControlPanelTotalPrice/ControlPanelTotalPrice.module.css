@@ -1,0 +1,55 @@
+.ButtonBuy {
+    min-width: 15%;
+    width: 15%;
+    margin: 2% auto auto 42.5%;
+    height: 50px;
+    text-align: center;
+    font-size: calc(0.9em + 0.9vw);
+    border: 3px solid transparent;
+    border-bottom: 3px solid #d58c05;
+    border-radius: 20px;
+    transition-duration: 0.5s;
+}
+
+@media only screen and (max-width: 1100px) {
+
+    .ButtonBuy {
+        font-size: calc(0.8em + 0.8vw);
+    }
+
+}
+
+.ButtonBuy:hover {
+    border: 3px solid #d58c05;
+    animation: shadow 1s infinite alternate;
+}
+
+.ButtonBuy:after {
+    content: attr(data-price);
+}
+
+.ButtonBuy:hover:after {
+    animation: changeLetter 2s infinite alternate;
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}
+
+@keyframes changeLetter {
+    0% {
+        content: attr(data-price);
+    }
+    30% {
+        color: white;
+    }
+    100% {
+        content: "BUY";
+    }
+}
+

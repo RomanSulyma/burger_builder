@@ -1,0 +1,25 @@
+.row {
+    width: 1140px;
+    margin: 0 auto;
+}
+
+@media only screen and (max-width: 1300px) {
+    .row {
+        width: 720px;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .row {
+        width: 480px;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .row {
+        width: 300px;
+        margin: 0 auto;
+    }
+}

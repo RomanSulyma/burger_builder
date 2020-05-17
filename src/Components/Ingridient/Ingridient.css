@@ -1,0 +1,66 @@
+.Ingridient {
+    display: inline-block;
+    margin: 10px auto auto;
+    transition-duration: 2s;
+    border: 2px solid transparent;
+}
+
+.Ingridient:hover {
+    border: 2px solid #d58c05;
+    animation: shadow 1s infinite alternate;
+    transform: scale(1.1);
+}
+
+.IngridientText {
+    display: inline-block;
+    width: 20%;
+    vertical-align: middle;
+    margin: -17px 0 0 5%;
+    opacity: 0;
+    transition-duration: 1s;
+}
+
+.Ingridient:hover + .IngridientText {
+    opacity: 1;
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}
+
+.Tomato {
+    width: 40%;
+    margin-left: 30%;
+    background-color: #c74327;
+    height : 20px;
+    border-radius: 3px;
+}
+
+.Cheese {
+    width: 40%;
+    margin-left: 30%;
+    background-color: #ffd774;
+    height : 20px;
+    border-radius: 3px;
+}
+
+.Meat {
+    width: 40%;
+    margin-left: 30%;
+    background-color: #72381a;
+    height : 20px;
+    border-radius: 15px;
+}
+
+.Salad {
+    width: 40%;
+    margin-left: 30%;
+    background-color: #1a9c48;
+    height : 20px;
+    border-radius: 3px;
+}

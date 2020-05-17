@@ -1,0 +1,18 @@
+.Popup {
+    position: fixed;
+    left: calc(-50vw + 50%);
+    right: calc(-50vw + 50%);
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    z-index: 200;
+    background-color: #d3d3d3;
+    opacity: 0.8;
+    border-radius: 20px;
+    transform: scale(0);
+    transition: all 0.5s ease-in-out; /*make it smooth*/
+}
+
+.PopupVisible {
+    transform: scale(1);
+}

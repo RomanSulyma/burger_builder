@@ -1,0 +1,38 @@
+.Checkout {
+    display: inline-block;
+    margin: 0.5%;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    transition-duration: 0.5s;
+}
+
+.Checkout:hover {
+    animation: shadow 1s infinite alternate;
+    transform: scale(1.1);
+}
+
+.TomatoCheckout {
+    background-color: #c74327;
+}
+
+.CheeseCheckout {
+    background-color: #ffd774;
+}
+
+.MeatCheckout {
+    background-color: #72381a;
+}
+
+.SaladCheckout {
+    background-color: #1a9c48;
+}
+
+@keyframes shadow {
+    from {
+        box-shadow: 0 0 5px 2px #d58c05;
+    }
+    to {
+        box-shadow: 0 0 9px 3px gold;
+    }
+}
