@@ -1,14 +1,13 @@
-import React, {useContext} from "react";
+import React from "react";
 import classes from './Popup.module.css';
 import PopupContent from "../PopupContent/PopupContent";
-import Context from "../Context/Context";
+import {connect} from "react-redux";
 
 function Popup(props) {
 
     let className = [classes.Popup];
-    const context = useContext(Context);
 
-    if (context.visibilityState) {
+    if (props.visibilityState) {
         className.push(classes.PopupVisible);
         className = className.join(' ');
     }
@@ -20,4 +19,10 @@ function Popup(props) {
     );
 }
 
-export default Popup;
+const mapStateToProps = (state) => {
+    return {
+        visibilityState: state.visibilityState
+    }
+};
+
+export default connect(mapStateToProps, null)(Popup);

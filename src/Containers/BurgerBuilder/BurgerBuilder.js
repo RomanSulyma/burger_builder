@@ -1,21 +1,22 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import BurgerElements from "../../Components/BurgerElements/BurgerElements";
 import ControlPanel from "../../Components/ControlPanel/ControlPanel";
 import axios from 'axios';
 import errorHandler from "../../HOC/ErrorHandler";
 import Loader from "../../Components/Loader/Loader";
-import Context from "../../Components/Context/Context";
+import * as actionCreators from '../../Redux/ActionCreators';
+import {connect} from "react-redux";
+import axiosInstance from "../../Axios/axiosConfig";
 
 function BurgerBuilder(props) {
 
     const [availableIngridients, availableIngridientsUpdate] = useState([]);
     const [ingredientsLoaded, ingredientsLoadedUpdate] = useState(false);
-    const context = useContext(Context);
 
     useEffect(() => {
         loadIngredients();
-        if (context.burgerElements.length === 0) {
-            context.loadBurger();
+        if (props.burgerElements.length === 0) {
+            props.fetchBurger();
         }
     },[]);
 
@@ -25,31 +26,31 @@ function BurgerBuilder(props) {
         const ingridient = availableIngridients[ingridientId];
         const ingridientPrice = ingridient.price;
 
-        ingridient.id = context.burgerElementId;
-        context.burgerElementIdUpdate(context.burgerElementId + 1);
+        ingridient.id = props.burgerElementId;
+        props.updateBurgerElementId(props.burgerElementId + 1);
 
-        const newBurgerElementsState = [...context.burgerElements];
+        const newBurgerElementsState = [...props.burgerElements];
         newBurgerElementsState.push(ingridient);
 
-        context.changeBurgerElements(newBurgerElementsState);
-        context.priceStateUpdate(context.priceState + ingridientPrice);
+        props.updateBurgerElements(newBurgerElementsState);
+        props.updatePriceState(props.priceState + ingridientPrice);
     };
 
     const removeIngridient = (id) => {
 
-        const ingridientId = context.burgerElements.findIndex(elem => elem.id === id);
-        const ingridientPrice = context.burgerElements[ingridientId].price;
+        const ingridientId = props.burgerElements.findIndex(elem => elem.id === id);
+        const ingridientPrice = props.burgerElements[ingridientId].price;
 
-        const newBurgerElementsState = [...context.burgerElements];
+        const newBurgerElementsState = [...props.burgerElements];
         newBurgerElementsState.splice(ingridientId, 1);
 
-        context.changeBurgerElements(newBurgerElementsState);
-        context.priceStateUpdate(context.priceState - ingridientPrice);
+        props.updateBurgerElements(newBurgerElementsState);
+        props.updatePriceState(props.priceState - ingridientPrice);
     };
 
     const loadIngredients = async () => {
         try {
-            const response = await axios.get('http://localhost:8080' + '/ingredients');
+            const response = await axiosInstance.get('/ingredients');
             availableIngridientsUpdate(response.data);
         } catch (e) {
             console.log('error load ingredients');
@@ -60,11 +61,11 @@ function BurgerBuilder(props) {
 
     let mainScreen = <Loader/>;
 
-    if(ingredientsLoaded && context.burgerLoaded) {
+    if (ingredientsLoaded && props.burgerLoaded) {
         mainScreen =
             <React.Fragment>
-                <BurgerElements ingridients={context.burgerElements} clicked={removeIngridient}/>
-                <ControlPanel ingridients={availableIngridients} price={context.priceState} clicked={addIngridient}/>
+                <BurgerElements ingridients={props.burgerElements} clicked={removeIngridient}/>
+                <ControlPanel ingridients={availableIngridients} price={props.priceState} clicked={addIngridient}/>
             </React.Fragment>
     }
 
@@ -75,4 +76,22 @@ function BurgerBuilder(props) {
     );
 }
 
-export default errorHandler(BurgerBuilder, axios);
+const mapStateToProps = (state) => {
+    return {
+        burgerLoaded: state.burgerLoaded,
+        burgerElements: state.burgerElements,
+        priceState: state.priceState,
+        burgerElementId: state.burgerElementId
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updatePriceState: (price) => dispatch(actionCreators.updatePriceState(price)),
+        updateBurgerElements: (burgerElements) => dispatch(actionCreators.updateBurgerElements(burgerElements)),
+        updateBurgerElementId: (id) => dispatch(actionCreators.updateBurgerElementId(id)),
+        fetchBurger: () => dispatch(actionCreators.fetchBurger())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(errorHandler(BurgerBuilder, axios));

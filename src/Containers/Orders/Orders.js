@@ -4,6 +4,7 @@ import Loader from "../../Components/Loader/Loader";
 import Order from "../../Components/Order/Order";
 import ErrorHandler from "../../HOC/ErrorHandler";
 import classes from "./Orders.module.css"
+import axiosInstance from "../../Axios/axiosConfig";
 
 function Orders() {
 
@@ -17,7 +18,7 @@ function Orders() {
     const loadAllBurgers = async () => {
         try {
             burgersLoadedUpdate(false);
-            const response = await axios.get('http://localhost:8080' + '/burger');
+            const response = await axiosInstance.get('/burger');
             if(response.data !== '') {
                 burgersUpdate(response.data);
             }

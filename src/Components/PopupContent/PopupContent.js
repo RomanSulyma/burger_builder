@@ -1,19 +1,24 @@
-import React, {useContext} from "react";
+import React from "react";
 import classes from './PopupContent.module.css';
-import Context from "../Context/Context";
 import ContactData from "../ContactData/ContactData";
+import {connect} from "react-redux";
 
 function PopupContent(props) {
 
     let className = [classes.PopupContent];
-    const context = useContext(Context);
 
     return (
         <div className={className}>
-            <p>Total price : {context.priceState}</p>
+            <p>Total price : {props.priceState}</p>
             <ContactData confirm={props.confirm}/>
         </div>
     );
 }
 
-export default PopupContent;
+const mapStateToProps = (state) => {
+    return {
+        priceState: state.priceState
+    }
+};
+
+export default connect(mapStateToProps, null)(PopupContent);

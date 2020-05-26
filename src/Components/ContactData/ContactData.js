@@ -1,25 +1,25 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import classes from "./ContactData.module.css";
 import CustomInput from "../CustomInput/CustomInput";
 import axios from "axios";
 import errorHandler from "../../HOC/ErrorHandler";
 import PopupButton from "../PopupButton/PopupButton";
-import Context from "../Context/Context";
+import {connect} from "react-redux";
+import * as actionCreators from '../../Redux/ActionCreators';
+import axiosInstance from "../../Axios/axiosConfig";
 
 function ContactData(props) {
 
     const [inputsState, inputsStateUpdate] = useState([]);
     const [enabledState, enabledStateUpdate] = useState(false);
-    const context = useContext(Context);
 
     useEffect(() => {
-            loadValidationInputs();
-    },[]);
+        loadValidationInputs();
+    }, []);
 
     const loadValidationInputs = async () => {
         try {
-            const response = await axios.get('http://localhost:8080' + '/burger/validation-inputs');
-            console.log(response.data);
+            const response = await axiosInstance.get('/burger/validation-inputs');
             inputsStateUpdate(response.data);
         } catch (e) {
             console.log('error load validation inputs');
@@ -30,9 +30,9 @@ function ContactData(props) {
 
         if (inputElement.isValid && inputElement.isTouched) {
 
-            inputElement.rules.map(rule => {
+            inputElement.rules.forEach(rule => {
 
-                if(!inputElement.config.value.match(new RegExp(rule.regex))) {
+                if (!inputElement.config.value.match(new RegExp(rule.regex))) {
                     inputElement.isValid = false;
                     inputElement.error = rule.errorMessage;
                 }
@@ -43,9 +43,9 @@ function ContactData(props) {
     const toggleButton = (newInputsState) => {
 
         enabledStateUpdate(true);
-        newInputsState.map(inputElement => {
+        newInputsState.forEach(inputElement => {
 
-            if(!inputElement.isValid) {
+            if (!inputElement.isValid) {
                 enabledStateUpdate(false);
             }
         });
@@ -76,10 +76,16 @@ function ContactData(props) {
     return (
         <div className={classes.ContactData}>
             {inputs}
-            <PopupButton clicked={context.visibilityUpdate}>CANCEL</PopupButton>
+            <PopupButton clicked={props.visibilityUpdate}>CANCEL</PopupButton>
             <PopupButton clicked={props.confirm} enabled={enabledState}>CONFIRM</PopupButton>
         </div>
     );
 }
 
-export default errorHandler(ContactData, axios);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        visibilityUpdate: () => dispatch(actionCreators.updateVisibility())
+    }
+};
+
+export default connect(null, mapDispatchToProps)(errorHandler(ContactData, axios));

@@ -1,20 +1,32 @@
-import React, {useContext} from "react";
+import React from "react";
 import classes from './Backdrop.module.css'
-import Context from "../Context/Context";
+import * as actionCreators from '../../Redux/ActionCreators';
+import {connect} from "react-redux";
 
-function Backdrop() {
+function Backdrop(props) {
 
     let className = [classes.Backdrop];
-    const context = useContext(Context);
 
-    if (!context.visibilityState) {
+    if (!props.visibilityState) {
         className.push(classes.BackdropInvisible);
         className = className.join(' ');
     }
 
     return (
-        <div className={className} onClick={context.visibilityUpdate}/>
+        <div className={className} onClick={props.visibilityUpdate}/>
     );
 }
 
-export default Backdrop;
+const mapStateToProps = (state) => {
+    return {
+        visibilityState: state.visibilityState
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        visibilityUpdate: () => dispatch(actionCreators.updateVisibility())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Backdrop);

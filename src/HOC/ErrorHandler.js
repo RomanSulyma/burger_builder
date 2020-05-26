@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import classes from './ErrorHandler.module.css';
 
 const errorHandler = (WrappedComponent, axios) => {
@@ -10,14 +10,14 @@ const errorHandler = (WrappedComponent, axios) => {
         componentDidMount() {
             // Set axios interceptors
             this.requestInterceptor = axios.interceptors.request.use(req => {
-                this.setState({ error: null });
+                this.setState({error: null});
                 return req;
             });
 
             this.responseInterceptor = axios.interceptors.response.use(
                 res => res,
                 error => {
-                    this.setState({ error });
+                    this.setState({error});
                 }
             );
         }
