@@ -1,41 +1,69 @@
 import React from "react";
 import ControlButton from "../ControlButton/ControlButton";
 import classes from "./CheckoutPanel.module.css";
-import {withRouter} from "react-router";
-import * as actionCreators from '../../Redux/ActionCreators';
-import {connect} from "react-redux";
+
+export const nextActions = {
+    login: 'login',
+    register: 'register',
+    buy: 'buy',
+    cancel: 'cancel'
+};
 
 function CheckoutPanel(props) {
 
+    const nextAction = (action) => {
+        switch (action) {
+            case nextActions.login :
+                props.updateNextButtonActions(nextActions.login);
+                props.visibilityUpdate();
+                break;
+            case nextActions.register :
+                props.updateNextButtonActions(nextActions.register);
+                props.visibilityUpdate();
+                break;
+            case nextActions.buy :
+                props.updateNextButtonActions(nextActions.buy);
+                props.visibilityUpdate();
+                break;
+            case nextActions.cancel :
+                props.toBurgerBuilder();
+                break;
+        }
+    };
+
+    let buttons = (
+        <React.Fragment>
+            <ControlButton clicked={() => nextAction(nextActions.cancel)}
+                           className={classes.CheckoutButton}>Cancel</ControlButton>
+            <ControlButton clicked={() => nextAction(nextActions.buy)}
+                           className={classes.CheckoutButton}>Continue</ControlButton>
+        </React.Fragment>
+    );
+
     let text = "Your burger not ready :(";
 
-    if (props.burgerElements.length !== 0) {
+    if (!props.isAuthorized) {
+
+        text = "Need authorization";
+        buttons = (
+            <React.Fragment>
+                <ControlButton clicked={() => nextAction(nextActions.login)}
+                               className={classes.CheckoutButton}>Login</ControlButton>
+                <ControlButton clicked={() => nextAction(nextActions.register)}
+                               className={classes.CheckoutButton}>Register</ControlButton>
+            </React.Fragment>
+        );
+
+    } else if (props.burgerElements.length !== 0) {
         text = "Your burger ready!";
     }
-
-    const toBurgerBuilder = () => {
-        props.history.push('/burger');
-    };
 
     return (
         <div className={classes.CheckoutPanel}>
             <p>{text}</p>
-            <ControlButton clicked={toBurgerBuilder} className={classes.CheckoutButton}>Cancel</ControlButton>
-            <ControlButton clicked={props.visibilityUpdate} className={classes.CheckoutButton}>Continue</ControlButton>
+            {buttons}
         </div>
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        burgerElements: state.burgerElements
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        visibilityUpdate: () => dispatch(actionCreators.updateVisibility())
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CheckoutPanel));
+export default CheckoutPanel;

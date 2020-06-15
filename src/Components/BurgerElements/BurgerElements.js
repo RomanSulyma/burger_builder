@@ -1,25 +1,26 @@
 import React from "react";
-import Ingridient from "../Ingridient/Ingridient";
+import Ingredient from "../Ingredient/Ingredient";
 import classes from './BurgerElements.module.css';
 
 function BurgerElements(props) {
 
     const className = [classes.Burger, "row"];
-    let ingridients;
+    let ingredients;
 
-    ingridients = props.ingridients.map(ingridient => {
-        return <Ingridient type={ingridient.name} title={ingridient.name} price={ingridient.price} key={ingridient.id} id={ingridient.id} clicked={props.clicked}/>
+    ingredients = props.ingredients.map(ingredient => {
+        return <Ingredient type={ingredient.name} title={ingredient.name} price={ingredient.price} key={ingredient.id}
+                           id={ingredient.id} clicked={props.clicked}/>
     });
 
-    if (props.ingridients.length === 0) {
-        ingridients = 'Let\'s add some ingridients';
+    if (props.ingredients.length === 0) {
+        ingredients = 'Let\'s add some ingredients';
         className.push(classes.BurgerEmpty);
     }
 
     return (
         <div className={className.join(' ')}>
             <div className={classes.TopBun}/>
-                {ingridients}
+            {ingredients}
             <div className={classes.BottomBun}/>
         </div>
     );

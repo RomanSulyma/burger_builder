@@ -5,7 +5,13 @@ const initialState = {
     priceState: 0,
     burgerElementId: 0,
     visibilityState: false,
-    burgerLoaded: false
+    burgerLoaded: false,
+    validationConstraints: [],
+    isAuthorized: false,
+    token: null,
+    popupFields: "login",
+    orders: [],
+    nextButtonAction: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,6 +49,52 @@ const reducer = (state = initialState, action) => {
                 burgerElements: action.burgerElements,
                 priceState: action.totalPrice,
                 burgerElementId: action.burgerElementId
+            };
+        case actionTypes.LOAD_VALIDATION_CONSTRAINTS_SUCCESS :
+
+            action.validationConstraints.forEach(value => {
+                value.isValid = false;
+                value.isTouched = false;
+            });
+
+            return {
+                ...state,
+                validationConstraints: action.validationConstraints
+            };
+        case actionTypes.UPDATE_VALIDATION_CONSTRAINTS :
+            return {
+                ...state,
+                validationConstraints: action.validationConstraints
+            };
+        case actionTypes.IS_AUTHORIZED_UPDATE :
+            return {
+                ...state,
+                isAuthorized: action.isAuthorized
+            };
+        case actionTypes.TOKEN_UPDATE :
+            return {
+                ...state,
+                token: action.token
+            };
+        case actionTypes.POPUP_FIELDS_UPDATE :
+            return {
+                ...state,
+                popupFields: action.popupFields
+            };
+        case actionTypes.FETCH_ALL_ORDERS_SUCCESS :
+            return {
+                ...state,
+                orders: action.orders
+            };
+        case actionTypes.FETCH_MY_ORDERS_SUCCESS :
+            return {
+                ...state,
+                orders: action.orders
+            };
+        case actionTypes.UPDATE_NEXT_BUTTON_ACTION :
+            return {
+                ...state,
+                nextButtonAction: action.nextButtonAction
             };
         default :
             return state;

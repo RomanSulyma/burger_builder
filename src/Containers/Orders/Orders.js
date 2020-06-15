@@ -1,42 +1,27 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
+import React, {useEffect} from "react";
 import Loader from "../../Components/Loader/Loader";
 import Order from "../../Components/Order/Order";
-import ErrorHandler from "../../HOC/ErrorHandler";
 import classes from "./Orders.module.css"
-import axiosInstance from "../../Axios/axiosConfig";
+import * as actionCreators from "../../Redux/ActionCreators";
+import {connect} from "react-redux";
+import PopupButton from "../../Components/PopupButton/PopupButton";
+import errorHandler from "../../HOC/ErrorHandler";
 
-function Orders() {
+function Orders(props) {
 
-    const [burgers , burgersUpdate] = useState([]);
-    const [burgersLoaded, burgersLoadedUpdate] = useState(false);
+    let mainScreen;
 
     useEffect(() => {
-        loadAllBurgers();
-    },[]);
+        mainScreen = <Loader/>;
+        props.fetchAllOrders();
+    }, []);
 
-    const loadAllBurgers = async () => {
-        try {
-            burgersLoadedUpdate(false);
-            const response = await axiosInstance.get('/burger');
-            if(response.data !== '') {
-                burgersUpdate(response.data);
-            }
-            burgersLoadedUpdate(true);
-        } catch (e) {
-            console.log('error load orders');
-        } finally {
 
-        }
-    };
+    if (props.orders) {
 
-    let mainScreen = <Loader/>;
-
-    if (burgersLoaded) {
-
-        if (burgers.length !== 0) {
-            mainScreen = burgers.map(burger => {
-                return <Order burger={burger} key={burger.id}>{burger}</Order>
+        if (props.orders.length !== 0) {
+            mainScreen = props.orders.map(order => {
+                return <Order order={order} key={order.burgerId}>{order}</Order>
             });
         } else {
             mainScreen = <h1>Your orders empty :(</h1>
@@ -45,9 +30,26 @@ function Orders() {
 
     return (
         <div className={classes.Orders}>
+            <PopupButton clicked={props.fetchAllOrders}>All orders</PopupButton>
+            <PopupButton clicked={() => props.fetchMyOrders(props.token)}>My orders</PopupButton>
             {mainScreen}
         </div>
     );
 }
 
-export default ErrorHandler(Orders, axios);
+const mapStateToProps = (state) => {
+    return {
+        orders: state.orders,
+        isAuthorized: state.isAuthorized,
+        token: state.token
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchAllOrders: () => dispatch(actionCreators.fetchAllOrders()),
+        fetchMyOrders: (token) => dispatch(actionCreators.fetchMyOrders(token))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(errorHandler(Orders));

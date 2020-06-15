@@ -13,8 +13,9 @@ function CustomInput(props) {
 
     return (
         <div>
-            <input onChange={props.changed} className={inputClasses.join(' ')} {...props.inputElement.config}/>
-            <div className={errorClasses.join(' ')}>{props.inputElement.error}</div>
+            <input placeholder={props.placeholder} onChange={props.changed}
+                   className={inputClasses.join(' ')} {...props.inputElement.config}/>
+            <div className={errorClasses.join(' ')}>{props.inputElement.errorMessage}</div>
         </div>
 
     );

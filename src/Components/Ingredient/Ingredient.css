@@ -1,17 +1,17 @@
-.Ingridient {
+.Ingredient {
     display: inline-block;
     margin: 10px auto auto;
     transition-duration: 2s;
     border: 2px solid transparent;
 }
 
-.Ingridient:hover {
+.Ingredient:hover {
     border: 2px solid #d58c05;
     animation: shadow 1s infinite alternate;
     transform: scale(1.1);
 }
 
-.IngridientText {
+.IngredientText {
     display: inline-block;
     width: 20%;
     vertical-align: middle;
@@ -20,7 +20,7 @@
     transition-duration: 1s;
 }
 
-.Ingridient:hover + .IngridientText {
+.Ingredient:hover + .IngredientText {
     opacity: 1;
 }
 

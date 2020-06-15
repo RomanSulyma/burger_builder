@@ -1,5 +1,5 @@
 import * as actionTypes from "./ActionTypes";
-import axiosInstance from "../Axios/axiosConfig";
+import {fetchLastBurger, fetchValidationInputs, getBurger, getOrderCustomer} from "../Axios/axiosRequests";
 
 export const updateVisibility = () => {
     return {
@@ -35,6 +35,13 @@ export const updateBurgerElementId = (burgerElementId) => {
     }
 };
 
+export const updateValidationConstraints = (validationConstraints) => {
+    return {
+        type: actionTypes.UPDATE_VALIDATION_CONSTRAINTS,
+        validationConstraints: validationConstraints
+    }
+};
+
 const fetchBurgerSuccess = (data) => {
     return {
         type: actionTypes.LOAD_BURGER_SUCCESS,
@@ -44,16 +51,45 @@ const fetchBurgerSuccess = (data) => {
     };
 };
 
-const fetchBurgerFailed = () => {
-    console.log('error load burger');
+export const fetchBurgerFailed = (message) => {
+    console.log('error load burger' + message);
 };
 
+export const isAuthorizedUpdate = (isAuthorized) => {
+
+    setTimeout(function () {
+        isAuthorizedUpdate(false);
+        tokenUpdate(null);
+    }, 10000);
+
+    return {
+        type: actionTypes.IS_AUTHORIZED_UPDATE,
+        isAuthorized: isAuthorized
+    }
+};
+
+export const tokenUpdate = (token) => {
+
+    token = `Bearer ${token}`;
+
+    return {
+        type: actionTypes.TOKEN_UPDATE,
+        token: token
+    }
+};
+
+export const updatePopupFields = (popupFields) => {
+    return {
+        type: actionTypes.POPUP_FIELDS_UPDATE,
+        popupFields: popupFields
+    }
+};
 
 export const fetchBurger = () => {
     return async (dispatch) => {
         try {
             dispatch(updateBurgerLoaded(false));
-            const response = await axiosInstance.get('/burger/last');
+            const response = await fetchLastBurger();
 
             if (response.data !== '') {
                 dispatch(fetchBurgerSuccess(response.data));
@@ -61,8 +97,99 @@ export const fetchBurger = () => {
 
             dispatch(updateBurgerLoaded(true));
         } catch (e) {
-            dispatch(fetchBurgerFailed);
+            fetchBurgerFailed(e.message);
         }
+    }
+};
+
+export const fetchValidationConstraintsSuccess = (validationConstraints) => {
+    return {
+        type: actionTypes.LOAD_VALIDATION_CONSTRAINTS_SUCCESS,
+        validationConstraints: validationConstraints
+    };
+};
+
+const fetchValidationConstraintsFailed = (message) => {
+    console.log('error load validationConstraints' + message);
+};
+
+export const fetchValidationConstraints = () => {
+    return async (dispatch) => {
+        try {
+            const response = await fetchValidationInputs();
+
+            if (response.data !== '') {
+                dispatch(fetchValidationConstraintsSuccess(response.data));
+            }
+        } catch (e) {
+            fetchValidationConstraintsFailed(e.message);
+        }
+    }
+};
+
+export const fetchAllOrders = () => {
+    return async (dispatch) => {
+        try {
+
+            const response = await getBurger();
+
+            if (response.data !== '') {
+                console.log(response.data);
+                dispatch(fetchAllOrdersSuccess(response.data));
+            }
+
+        } catch (e) {
+            fetchAllOrdersFailed(e.message);
+        }
+    }
+};
+
+export const fetchAllOrdersSuccess = (orders) => {
+    return {
+        type: actionTypes.FETCH_ALL_ORDERS_SUCCESS,
+        orders: orders
+    };
+};
+
+const fetchAllOrdersFailed = (message) => {
+    console.log('error load all orders' + message);
+};
+
+export const fetchMyOrders = (token) => {
+    return async (dispatch) => {
+
+        if (token === null) {
+            dispatch(fetchMyOrdersSuccess([]));
+        } else {
+            try {
+                const response = await getOrderCustomer(token);
+
+                if (response.data !== '') {
+                    console.log(response.data);
+                    dispatch(fetchMyOrdersSuccess(response.data));
+                }
+            } catch (e) {
+                fetchMyOrdersFailed(e.message);
+            }
+        }
+    }
+};
+
+export const fetchMyOrdersSuccess = (orders) => {
+    return {
+        type: actionTypes.FETCH_MY_ORDERS_SUCCESS,
+        orders: orders
+    };
+};
+
+const fetchMyOrdersFailed = (message) => {
+    console.log('error load my orders' + message);
+};
+
+export const updateNextButtonAction = (nextButtonAction) => {
+    return {
+        type: actionTypes.UPDATE_NEXT_BUTTON_ACTION,
+        nextButtonAction: nextButtonAction
     }
 };
 

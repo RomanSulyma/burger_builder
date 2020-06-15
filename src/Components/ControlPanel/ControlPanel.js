@@ -4,13 +4,13 @@ import ControlPanelTotalPrice from "../ControlPanelTotalPrice/ControlPanelTotalP
 
 function ControlPanel(props) {
 
-    let elements = props.ingridients.map(element => {
+    let elements = props.ingredients.map(element => {
         return <ControlPanelElement type={element.name} price={element.price} key={element.id} clicked={props.clicked}/>
     });
 
     return (
         <React.Fragment>
-            <ControlPanelTotalPrice>{props.price}</ControlPanelTotalPrice>
+            <ControlPanelTotalPrice toCheckout={props.toCheckout}>{props.price}</ControlPanelTotalPrice>
             <div className="row">
                 {elements}
             </div>

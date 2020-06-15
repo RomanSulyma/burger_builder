@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import classes from './ErrorHandler.module.css';
+import axiosInstance from "../Axios/axiosConfig";
 
-const errorHandler = (WrappedComponent, axios) => {
+const errorHandler = (WrappedComponent) => {
     return class EH extends Component {
         state = {
             error: null
@@ -9,14 +10,20 @@ const errorHandler = (WrappedComponent, axios) => {
 
         componentDidMount() {
             // Set axios interceptors
-            this.requestInterceptor = axios.interceptors.request.use(req => {
+            this.requestInterceptor = axiosInstance.interceptors.request.use(req => {
                 this.setState({error: null});
                 return req;
             });
 
-            this.responseInterceptor = axios.interceptors.response.use(
+            this.responseInterceptor = axiosInstance.interceptors.response.use(
                 res => res,
                 error => {
+
+
+                    if (error.response != null && error.response.status != null) {
+                        return error.response;
+                    }
+
                     this.setState({error});
                 }
             );
@@ -24,8 +31,8 @@ const errorHandler = (WrappedComponent, axios) => {
 
         componentWillUnmount() {
             // Remove handlers, so Garbage Collector will get rid of if WrappedComponent will be removed
-            axios.interceptors.request.eject(this.requestInterceptor);
-            axios.interceptors.response.eject(this.responseInterceptor);
+            axiosInstance.interceptors.request.eject(this.requestInterceptor);
+            axiosInstance.interceptors.response.eject(this.responseInterceptor);
         }
 
         render() {

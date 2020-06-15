@@ -1,7 +1,6 @@
 import React from "react";
 import classes from './Popup.module.css';
 import PopupContent from "../PopupContent/PopupContent";
-import {connect} from "react-redux";
 
 function Popup(props) {
 
@@ -14,15 +13,13 @@ function Popup(props) {
 
     return (
         <div className={className}>
-            <PopupContent confirm={props.confirm}/>
+            <PopupContent validationConstraints={props.validationConstraints} visibilityUpdate={props.visibilityUpdate}
+                          updateValidationConstraints={props.updateValidationConstraints} error={props.error}
+                          fieldType={props.popupFields} enabledState={props.enabledState}
+                          enabledStateUpdate={props.enabledStateUpdate} confirm={props.confirm}/>
         </div>
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        visibilityState: state.visibilityState
-    }
-};
 
-export default connect(mapStateToProps, null)(Popup);
+export default Popup;

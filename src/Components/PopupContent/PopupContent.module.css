@@ -1,11 +1,15 @@
-.PopupContent {
-
-}
-
 .PopupContent p {
     display: block;
     width: 40%;
     margin: 20px auto auto;
     text-align: center;
     font-size: 200%;
+}
+
+.PopupError {
+    display: block;
+    text-align: center;
+    font-size: 200%;
+    color: #d58c05;
+    margin: 5% 10px;
 }
