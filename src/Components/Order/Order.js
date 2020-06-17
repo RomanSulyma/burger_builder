@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Order.module.css"
 import CheckoutIngredient from "../CheckoutIngredient/CheckoutIngredient";
 
-function Order(props) {
+const Order = (props) => {
 
     const ingredientsJSON = JSON.parse(props.order.ingredients);
 
@@ -24,6 +24,6 @@ function Order(props) {
             <div className={classes.OrderRow}> Customer age : {props.order.age}</div>
         </div>
     );
-}
+};
 
 export default Order;

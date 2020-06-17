@@ -3,7 +3,7 @@ import CustomInput from "../CustomInput/CustomInput";
 import PopupButton from "../PopupButton/PopupButton";
 import classes from './PopupContent.module.css'
 
-function PopupContent(props) {
+const PopupContent = (props) => {
 
     const validation = (inputElement) => {
 
@@ -67,6 +67,6 @@ function PopupContent(props) {
             <PopupButton clicked={props.confirm} enabled={props.enabledState}>CONFIRM</PopupButton>
         </div>
     );
-}
+};
 
 export default PopupContent;

@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import PopupButton from "../../Components/PopupButton/PopupButton";
 import errorHandler from "../../HOC/ErrorHandler";
 
-function Orders(props) {
+const Orders = (props) => {
 
     let mainScreen;
 
@@ -35,7 +35,7 @@ function Orders(props) {
             {mainScreen}
         </div>
     );
-}
+};
 
 const mapStateToProps = (state) => {
     return {

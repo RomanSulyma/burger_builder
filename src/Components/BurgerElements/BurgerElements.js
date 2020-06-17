@@ -2,7 +2,7 @@ import React from "react";
 import Ingredient from "../Ingredient/Ingredient";
 import classes from './BurgerElements.module.css';
 
-function BurgerElements(props) {
+const BurgerElements = (props) => {
 
     const className = [classes.Burger, "row"];
     let ingredients;
@@ -13,7 +13,7 @@ function BurgerElements(props) {
     });
 
     if (props.ingredients.length === 0) {
-        ingredients = 'Let\'s add some ingredients';
+        ingredients = `Let's add some ingredients`;
         className.push(classes.BurgerEmpty);
     }
 
@@ -24,6 +24,6 @@ function BurgerElements(props) {
             <div className={classes.BottomBun}/>
         </div>
     );
-}
+};
 
 export default BurgerElements;

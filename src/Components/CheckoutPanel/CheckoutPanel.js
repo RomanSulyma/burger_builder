@@ -2,40 +2,35 @@ import React from "react";
 import ControlButton from "../ControlButton/ControlButton";
 import classes from "./CheckoutPanel.module.css";
 
-export const nextActions = {
-    login: 'login',
-    register: 'register',
-    buy: 'buy',
-    cancel: 'cancel'
-};
-
-function CheckoutPanel(props) {
+const CheckoutPanel = (props) => {
 
     const nextAction = (action) => {
         switch (action) {
-            case nextActions.login :
-                props.updateNextButtonActions(nextActions.login);
+            case props.nextActions.login :
+                props.updateNextButtonActions(props.nextActions.login);
                 props.visibilityUpdate();
                 break;
-            case nextActions.register :
-                props.updateNextButtonActions(nextActions.register);
+            case props.nextActions.register :
+                props.updateNextButtonActions(props.nextActions.register);
                 props.visibilityUpdate();
                 break;
-            case nextActions.buy :
-                props.updateNextButtonActions(nextActions.buy);
+            case props.nextActions.buy :
+                props.updateNextButtonActions(props.nextActions.buy);
                 props.visibilityUpdate();
                 break;
-            case nextActions.cancel :
+            case props.nextActions.cancel :
                 props.toBurgerBuilder();
+                break;
+            default :
                 break;
         }
     };
 
     let buttons = (
         <React.Fragment>
-            <ControlButton clicked={() => nextAction(nextActions.cancel)}
+            <ControlButton clicked={() => nextAction(props.nextActions.cancel)}
                            className={classes.CheckoutButton}>Cancel</ControlButton>
-            <ControlButton clicked={() => nextAction(nextActions.buy)}
+            <ControlButton clicked={() => nextAction(props.nextActions.buy)}
                            className={classes.CheckoutButton}>Continue</ControlButton>
         </React.Fragment>
     );
@@ -47,9 +42,9 @@ function CheckoutPanel(props) {
         text = "Need authorization";
         buttons = (
             <React.Fragment>
-                <ControlButton clicked={() => nextAction(nextActions.login)}
+                <ControlButton clicked={() => nextAction(props.nextActions.login)}
                                className={classes.CheckoutButton}>Login</ControlButton>
-                <ControlButton clicked={() => nextAction(nextActions.register)}
+                <ControlButton clicked={() => nextAction(props.nextActions.register)}
                                className={classes.CheckoutButton}>Register</ControlButton>
             </React.Fragment>
         );
@@ -64,6 +59,6 @@ function CheckoutPanel(props) {
             {buttons}
         </div>
     );
-}
+};
 
 export default CheckoutPanel;

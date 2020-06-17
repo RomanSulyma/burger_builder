@@ -1,7 +1,7 @@
 import React from "react";
 import classes from './Backdrop.module.css'
 
-function Backdrop(props) {
+const Backdrop = (props) => {
 
     let className = [classes.Backdrop];
 
@@ -13,6 +13,6 @@ function Backdrop(props) {
     return (
         <div className={className} onClick={props.visibilityUpdate}/>
     );
-}
+};
 
 export default Backdrop;

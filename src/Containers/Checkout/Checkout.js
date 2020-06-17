@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import BurgerElements from "../../Components/BurgerElements/BurgerElements";
 import Popup from "../../Components/Popup/Popup";
-import CheckoutPanel, {nextActions} from "../../Components/CheckoutPanel/CheckoutPanel";
+import CheckoutPanel from "../../Components/CheckoutPanel/CheckoutPanel";
 import Loader from "../../Components/Loader/Loader";
 import * as actionCreators from '../../Redux/ActionCreators';
 import {connect} from "react-redux";
@@ -9,7 +9,14 @@ import {buyBurger, signIn, signUp} from "../../Axios/axiosRequests";
 import errorHandler from "../../HOC/ErrorHandler";
 import {withRouter} from "react-router";
 
-function Checkout(props) {
+const Checkout = (props) => {
+
+    const nextActions = {
+        login: 'login',
+        register: 'register',
+        buy: 'buy',
+        cancel: 'cancel'
+    };
 
     const popupFields = {
         order: "order",
@@ -130,7 +137,7 @@ function Checkout(props) {
                                validationConstraints={props.validationConstraints}
                                visibilityUpdate={props.visibilityUpdate}
                                updateNextButtonActions={props.updateNextButtonActions}
-                               toBurgerBuilder={toBurgerBuilder}/>
+                               toBurgerBuilder={toBurgerBuilder} nextActions={nextActions}/>
             </React.Fragment>
         );
     }
@@ -140,7 +147,7 @@ function Checkout(props) {
             {mainScreen}
         </div>
     );
-}
+};
 
 const mapStateToProps = (state) => {
     return {

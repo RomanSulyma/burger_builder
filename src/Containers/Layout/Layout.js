@@ -10,7 +10,7 @@ import * as actionCreators from '../../Redux/ActionCreators';
 import {connect} from "react-redux";
 import errorHandler from "../../HOC/ErrorHandler";
 
-function Layout(props) {
+const Layout = (props) => {
 
     useEffect(() => {
         props.fetchValidationConstraints();
@@ -30,7 +30,7 @@ function Layout(props) {
             </div>
         </BrowserRouter>
     );
-}
+};
 
 const mapStateToProps = (state) => {
     return {

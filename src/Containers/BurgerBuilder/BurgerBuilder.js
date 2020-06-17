@@ -8,7 +8,7 @@ import {getIngredients} from "../../Axios/axiosRequests";
 import errorHandler from "../../HOC/ErrorHandler";
 import {withRouter} from "react-router";
 
-function BurgerBuilder(props) {
+const BurgerBuilder = (props) => {
 
     const [availableIngredients, availableIngredientsUpdate] = useState([]);
     const [ingredientsLoaded, ingredientsLoadedUpdate] = useState(false);
@@ -18,7 +18,7 @@ function BurgerBuilder(props) {
         if (props.burgerElements.length === 0) {
             props.fetchBurger();
         }
-    },[]);
+    }, []);
 
     const addIngredient = (name) => {
 
@@ -79,7 +79,7 @@ function BurgerBuilder(props) {
             {mainScreen}
         </div>
     );
-}
+};
 
 const mapStateToProps = (state) => {
     return {

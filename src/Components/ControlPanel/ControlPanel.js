@@ -2,7 +2,7 @@ import React from "react";
 import ControlPanelElement from "../ControlPanelElement/ControlPanelElement";
 import ControlPanelTotalPrice from "../ControlPanelTotalPrice/ControlPanelTotalPrice";
 
-function ControlPanel(props) {
+const ControlPanel = (props) => {
 
     let elements = props.ingredients.map(element => {
         return <ControlPanelElement type={element.name} price={element.price} key={element.id} clicked={props.clicked}/>
@@ -16,6 +16,6 @@ function ControlPanel(props) {
             </div>
         </React.Fragment>
     );
-}
+};
 
 export default ControlPanel;

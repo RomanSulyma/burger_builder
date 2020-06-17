@@ -36,7 +36,7 @@
     }
 }
 
-.ButtonIngridient {
+.ButtonIngredient {
     width: 50%;
     margin: auto;
     border: 2px solid transparent;
@@ -46,6 +46,6 @@
     transition-duration: 0.5s;
 }
 
-.ButtonIngridient:hover {
+.ButtonIngredient:hover {
     border: 2px solid #d58c05;
 }

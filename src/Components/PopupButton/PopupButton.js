@@ -1,7 +1,7 @@
 import React from "react";
 import classes from './PopupButton.module.css';
 
-function PopupButton(props) {
+const PopupButton = (props) => {
 
     let className = [classes.PopupButton];
     let clicked = props.clicked;
@@ -14,6 +14,6 @@ function PopupButton(props) {
     return (
         <div onClick={clicked} className={className.join(' ')}>{props.children}</div>
     );
-}
+};
 
 export default PopupButton;

@@ -57,7 +57,7 @@ export const fetchBurgerFailed = (message) => {
 
 export const isAuthorizedUpdate = (isAuthorized) => {
 
-    setTimeout(function () {
+    setTimeout(() => {
         isAuthorizedUpdate(false);
         tokenUpdate(null);
     }, 10000);

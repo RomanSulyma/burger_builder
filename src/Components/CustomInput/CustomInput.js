@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./CustomInput.module.css";
 
-function CustomInput(props) {
+const CustomInput = (props) => {
 
     const inputClasses = [classes.CustomInput];
     const errorClasses = [classes.Error];
@@ -19,6 +19,6 @@ function CustomInput(props) {
         </div>
 
     );
-}
+};
 
 export default CustomInput;

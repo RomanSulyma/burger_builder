@@ -2,7 +2,7 @@ import React from "react";
 import classes from './Popup.module.css';
 import PopupContent from "../PopupContent/PopupContent";
 
-function Popup(props) {
+const Popup = (props) => {
 
     let className = [classes.Popup];
 
@@ -19,7 +19,7 @@ function Popup(props) {
                           enabledStateUpdate={props.enabledStateUpdate} confirm={props.confirm}/>
         </div>
     );
-}
+};
 
 
 export default Popup;

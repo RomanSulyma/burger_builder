@@ -1,7 +1,7 @@
 import React from "react";
 import './Ingredient.css';
 
-function Ingredient(props) {
+const Ingredient = (props) => {
 
     const classes = [props.type, 'Ingredient'].join(' ');
     const title = `Price : ${props.price}`;
@@ -12,6 +12,6 @@ function Ingredient(props) {
             <p className="IngredientText">{title}</p>
         </React.Fragment>
     );
-}
+};
 
 export default Ingredient;
