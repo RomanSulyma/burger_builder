@@ -11,13 +11,6 @@ import {withRouter} from "react-router";
 
 const Checkout = (props) => {
 
-    const nextActions = {
-        login: 'login',
-        register: 'register',
-        buy: 'buy',
-        cancel: 'cancel'
-    };
-
     const popupFields = {
         order: "order",
         login: "login",
@@ -33,6 +26,10 @@ const Checkout = (props) => {
         }
     }, []);
 
+    const saveToLocalStorage = (token, expirationTime) => {
+        localStorage.setItem('token', token);
+        localStorage.setItem('expirationTime', expirationTime);
+    };
 
     const confirmBuy = async () => {
         let burgerForm = new Map();
@@ -66,12 +63,17 @@ const Checkout = (props) => {
             const token = data.data.token;
 
             if (token !== null) {
-                props.isAuthorizedUpdate();
-                props.tokenUpdate(token);
+                props.authorize(token);
                 props.visibilityUpdate();
-                //props.updatePopupFields(popupFields.order);
 
                 errorStateUpdate(null);
+
+                const expirationTimeMills = new Date(data.data.expirationTime).getTime() - Date.now();
+                console.log(expirationTimeMills);
+
+                setTimeout(() => props.deAuthorize(), expirationTimeMills);
+
+                saveToLocalStorage(token, data.data.expirationTime);
             }
             enabledStateUpdate(false);
         }
@@ -92,12 +94,17 @@ const Checkout = (props) => {
             const token = data.data.token;
 
             if (token !== null) {
-                props.isAuthorizedUpdate();
-                props.tokenUpdate(token);
+                props.authorize(token);
                 props.visibilityUpdate();
-                // props.updatePopupFields(popupFields.order);
 
                 errorStateUpdate(null);
+
+                const expirationTimeMills = new Date(data.data.expirationTime).getTime() - Date.now();
+                console.log(expirationTimeMills);
+
+                setTimeout(() => props.deAuthorize(), expirationTimeMills);
+
+                saveToLocalStorage(token, data.data.expirationTime);
             }
             enabledStateUpdate(false);
         }
@@ -109,13 +116,13 @@ const Checkout = (props) => {
 
     const nextAction = () => {
         switch (props.nextButtonAction) {
-            case nextActions.login :
+            case props.nextActions.login :
                 props.updatePopupFields(popupFields.login);
                 return login;
-            case nextActions.register :
+            case props.nextActions.register :
                 props.updatePopupFields(popupFields.register);
                 return register;
-            case nextActions.buy :
+            case props.nextActions.order :
                 props.updatePopupFields(popupFields.order);
                 return confirmBuy;
         }
@@ -137,7 +144,7 @@ const Checkout = (props) => {
                                validationConstraints={props.validationConstraints}
                                visibilityUpdate={props.visibilityUpdate}
                                updateNextButtonActions={props.updateNextButtonActions}
-                               toBurgerBuilder={toBurgerBuilder} nextActions={nextActions}/>
+                               toBurgerBuilder={toBurgerBuilder} nextActions={props.nextActions}/>
             </React.Fragment>
         );
     }
@@ -168,7 +175,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         visibilityUpdate: () => dispatch(actionCreators.updateVisibility()),
         fetchBurger: () => dispatch(actionCreators.fetchBurger()),
-        isAuthorizedUpdate: () => dispatch(actionCreators.isAuthorizedUpdate(true)),
+        authorizationUpdate: (isAuthorized) => dispatch(actionCreators.authorizationUpdate(isAuthorized)),
         tokenUpdate: (token) => dispatch(actionCreators.tokenUpdate(token)),
         updatePopupFields: (popupFields) => dispatch(actionCreators.updatePopupFields(popupFields)),
         updateNextButtonActions: (action) => dispatch(actionCreators.updateNextButtonAction(action)),

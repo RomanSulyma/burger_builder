@@ -14,8 +14,8 @@ const CheckoutPanel = (props) => {
                 props.updateNextButtonActions(props.nextActions.register);
                 props.visibilityUpdate();
                 break;
-            case props.nextActions.buy :
-                props.updateNextButtonActions(props.nextActions.buy);
+            case props.nextActions.order :
+                props.updateNextButtonActions(props.nextActions.order);
                 props.visibilityUpdate();
                 break;
             case props.nextActions.cancel :
@@ -30,7 +30,7 @@ const CheckoutPanel = (props) => {
         <React.Fragment>
             <ControlButton clicked={() => nextAction(props.nextActions.cancel)}
                            className={classes.CheckoutButton}>Cancel</ControlButton>
-            <ControlButton clicked={() => nextAction(props.nextActions.buy)}
+            <ControlButton clicked={() => nextAction(props.nextActions.order)}
                            className={classes.CheckoutButton}>Continue</ControlButton>
         </React.Fragment>
     );

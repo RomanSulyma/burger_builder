@@ -55,12 +55,7 @@ export const fetchBurgerFailed = (message) => {
     console.log('error load burger' + message);
 };
 
-export const isAuthorizedUpdate = (isAuthorized) => {
-
-    setTimeout(() => {
-        isAuthorizedUpdate(false);
-        tokenUpdate(null);
-    }, 10000);
+export const authorizationUpdate = (isAuthorized) => {
 
     return {
         type: actionTypes.IS_AUTHORIZED_UPDATE,
@@ -70,7 +65,7 @@ export const isAuthorizedUpdate = (isAuthorized) => {
 
 export const tokenUpdate = (token) => {
 
-    token = `Bearer ${token}`;
+    console.log(`token : ${token}`);
 
     return {
         type: actionTypes.TOKEN_UPDATE,

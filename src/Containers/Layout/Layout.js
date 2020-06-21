@@ -14,7 +14,47 @@ const Layout = (props) => {
 
     useEffect(() => {
         props.fetchValidationConstraints();
+        checkAuthorization();
     }, []);
+
+    const nextActions = {
+        login: 'login',
+        register: 'register',
+        order: 'order',
+        cancel: 'cancel'
+    };
+
+    const checkAuthorization = () => {
+
+        const token = localStorage.getItem('token');
+        const expirationTime = localStorage.getItem('expirationTime');
+
+        if (token != null && expirationTime != null && validateExpirationTime(expirationTime)) {
+            new Date(expirationTime);
+            authorize(token);
+        } else {
+            deAuthorize();
+        }
+    };
+
+    const validateExpirationTime = (expirationTime) => {
+        return new Date(expirationTime).getTime() > Date.now();
+    };
+
+    const authorize = (token) => {
+        props.authorizationUpdate(true);
+        props.tokenUpdate(`Bearer ${token}`);
+    };
+
+    const deAuthorize = () => {
+        console.log("deathorize");
+        props.authorizationUpdate(false);
+        props.tokenUpdate(null);
+        props.updateNextButtonActions(nextActions.login);
+
+        localStorage.setItem('token', null);
+        localStorage.setItem('expirationTime', null);
+    };
 
     return (
         <BrowserRouter>
@@ -23,7 +63,8 @@ const Layout = (props) => {
                 <Backdrop visibilityState={props.visibilityState} visibilityUpdate={props.visibilityUpdate}/>
                 <Switch>
                     <Route path="/burger" render={() => <BurgerBuilder/>}/>
-                    <Route path="/checkout" render={() => <Checkout/>}/>
+                    <Route path="/checkout" render={() => <Checkout nextActions={nextActions} deAuthorize={deAuthorize}
+                                                                    authorize={authorize}/>}/>
                     <Route path="/orders" render={() => <Orders/>}/>
                     <Redirect from="/" to="/burger"/>
                 </Switch>
@@ -43,7 +84,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchValidationConstraints: () => dispatch(actionCreators.fetchValidationConstraints()),
         updateBurgerLoaded: (burgerLoaded) => dispatch(actionCreators.updateBurgerLoaded(burgerLoaded)),
-        visibilityUpdate: () => dispatch(actionCreators.updateVisibility())
+        visibilityUpdate: () => dispatch(actionCreators.updateVisibility()),
+        authorizationUpdate: (isAuthorized) => dispatch(actionCreators.authorizationUpdate(isAuthorized)),
+        updateNextButtonActions: (action) => dispatch(actionCreators.updateNextButtonAction(action)),
+        tokenUpdate: (token) => dispatch(actionCreators.tokenUpdate(token))
     }
 };
 
