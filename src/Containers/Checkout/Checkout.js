@@ -61,6 +61,7 @@ const Checkout = (props) => {
             errorStateUpdate('Bad credentials');
         } else {
             const token = data.data.token;
+            const tokenExpirationTime = new Date(...data.data.expirationTime).getTime();
 
             if (token !== null) {
                 props.authorize(token);
@@ -68,12 +69,12 @@ const Checkout = (props) => {
 
                 errorStateUpdate(null);
 
-                const expirationTimeMills = new Date(data.data.expirationTime).getTime() - Date.now();
+                const expirationTimeMills = tokenExpirationTime - Date.now();
                 console.log(expirationTimeMills);
 
-                setTimeout(() => props.deAuthorize(), expirationTimeMills);
+                setTimeout(() => props.deAuthorize, expirationTimeMills);
 
-                saveToLocalStorage(token, data.data.expirationTime);
+                saveToLocalStorage(token, tokenExpirationTime);
             }
             enabledStateUpdate(false);
         }
@@ -92,6 +93,7 @@ const Checkout = (props) => {
             errorStateUpdate(data.data.responseMessage);
         } else {
             const token = data.data.token;
+            const tokenExpirationTime = new Date(...data.data.expirationTime).getTime();
 
             if (token !== null) {
                 props.authorize(token);
@@ -99,12 +101,12 @@ const Checkout = (props) => {
 
                 errorStateUpdate(null);
 
-                const expirationTimeMills = new Date(data.data.expirationTime).getTime() - Date.now();
+                const expirationTimeMills = tokenExpirationTime - Date.now();
                 console.log(expirationTimeMills);
 
-                setTimeout(() => props.deAuthorize(), expirationTimeMills);
+                setTimeout(() => props.deAuthorize, expirationTimeMills);
 
-                saveToLocalStorage(token, data.data.expirationTime);
+                saveToLocalStorage(token, tokenExpirationTime);
             }
             enabledStateUpdate(false);
         }

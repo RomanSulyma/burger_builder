@@ -38,7 +38,7 @@ const Layout = (props) => {
     };
 
     const validateExpirationTime = (expirationTime) => {
-        return new Date(expirationTime).getTime() > Date.now();
+        return new Date(parseInt(expirationTime)).getTime() > Date.now();
     };
 
     const authorize = (token) => {
@@ -52,8 +52,8 @@ const Layout = (props) => {
         props.tokenUpdate(null);
         props.updateNextButtonActions(nextActions.login);
 
-        localStorage.setItem('token', null);
-        localStorage.setItem('expirationTime', null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('expirationTime');
     };
 
     return (
