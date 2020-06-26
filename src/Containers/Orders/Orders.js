@@ -9,10 +9,9 @@ import errorHandler from "../../HOC/ErrorHandler";
 
 const Orders = (props) => {
 
-    let mainScreen;
+    let mainScreen = <Loader/>;
 
     useEffect(() => {
-        mainScreen = <Loader/>;
         props.fetchAllOrders();
     }, []);
 
