@@ -61,7 +61,7 @@ const Checkout = (props) => {
             errorStateUpdate('Bad credentials');
         } else {
             const token = data.data.token;
-            const tokenExpirationTime = new Date(...data.data.expirationTime).getTime();
+            const tokenExpirationTime = new Date(data.data.expirationTime).getTime();
 
             if (token !== null) {
                 props.authorize(token);
@@ -72,7 +72,7 @@ const Checkout = (props) => {
                 const expirationTimeMills = tokenExpirationTime - Date.now();
                 console.log(expirationTimeMills);
 
-                setTimeout(() => props.deAuthorize, expirationTimeMills);
+                setTimeout(() => props.deAuthorize(), expirationTimeMills);
 
                 saveToLocalStorage(token, tokenExpirationTime);
             }
@@ -93,7 +93,7 @@ const Checkout = (props) => {
             errorStateUpdate(data.data.responseMessage);
         } else {
             const token = data.data.token;
-            const tokenExpirationTime = new Date(...data.data.expirationTime).getTime();
+            const tokenExpirationTime = new Date(data.data.expirationTime).getTime();
 
             if (token !== null) {
                 props.authorize(token);
@@ -104,7 +104,7 @@ const Checkout = (props) => {
                 const expirationTimeMills = tokenExpirationTime - Date.now();
                 console.log(expirationTimeMills);
 
-                setTimeout(() => props.deAuthorize, expirationTimeMills);
+                setTimeout(() => props.deAuthorize(), expirationTimeMills);
 
                 saveToLocalStorage(token, tokenExpirationTime);
             }
@@ -127,6 +127,9 @@ const Checkout = (props) => {
             case props.nextActions.order :
                 props.updatePopupFields(popupFields.order);
                 return confirmBuy;
+            default :
+                props.updatePopupFields(popupFields.login);
+                return login;
         }
     };
 

@@ -38,7 +38,7 @@ const Layout = (props) => {
     };
 
     const validateExpirationTime = (expirationTime) => {
-        return new Date(parseInt(expirationTime)).getTime() > Date.now();
+        return expirationTime > Date.now();
     };
 
     const authorize = (token) => {
