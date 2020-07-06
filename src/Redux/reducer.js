@@ -3,7 +3,6 @@ import * as actionTypes from './ActionTypes';
 const initialState = {
     burgerElements: [],
     priceState: 0,
-    burgerElementId: 0,
     visibilityState: false,
     burgerLoaded: false,
     validationConstraints: [],
@@ -38,17 +37,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 priceState: action.priceState
             };
-        case actionTypes.UPDATE_BURGER_ELEMENT_ID :
-            return {
-                ...state,
-                burgerElementId: action.burgerElementId
-            };
         case actionTypes.LOAD_BURGER_SUCCESS :
             return {
                 ...state,
                 burgerElements: action.burgerElements,
-                priceState: action.totalPrice,
-                burgerElementId: action.burgerElementId
+                priceState: action.totalPrice
             };
         case actionTypes.LOAD_VALIDATION_CONSTRAINTS_SUCCESS :
 

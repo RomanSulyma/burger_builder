@@ -4,6 +4,10 @@ import classes from "./CheckoutPanel.module.css";
 
 const CheckoutPanel = (props) => {
 
+    const firstButtonClass = classes.CheckoutButton;
+    const secondButtonClass = [classes.CheckoutButton, classes.CheckoutButtonSecond].join(' ');
+    const singleButtonClass = [classes.CheckoutButton, classes.CheckoutButtonSingle].join(' ');
+
     const nextAction = (action) => {
         switch (action) {
             case props.nextActions.login :
@@ -29,28 +33,37 @@ const CheckoutPanel = (props) => {
     let buttons = (
         <React.Fragment>
             <ControlButton clicked={() => nextAction(props.nextActions.cancel)}
-                           className={classes.CheckoutButton}>Cancel</ControlButton>
+                           className={firstButtonClass}>Cancel</ControlButton>
             <ControlButton clicked={() => nextAction(props.nextActions.order)}
-                           className={classes.CheckoutButton}>Continue</ControlButton>
+                           className={secondButtonClass}>Continue</ControlButton>
         </React.Fragment>
     );
 
-    let text = "Your burger not ready :(";
+    let text = "Your burger ready!";
 
-    if (!props.isAuthorized) {
+    if (props.burgerElements.length === 0) {
 
-        text = "Need authorization";
+        text = "Your burger not ready :(";
+
         buttons = (
             <React.Fragment>
-                <ControlButton clicked={() => nextAction(props.nextActions.login)}
-                               className={classes.CheckoutButton}>Login</ControlButton>
-                <ControlButton clicked={() => nextAction(props.nextActions.register)}
-                               className={classes.CheckoutButton}>Register</ControlButton>
+                <ControlButton clicked={() => nextAction(props.nextActions.cancel)}
+                               className={singleButtonClass}>Cancel</ControlButton>
             </React.Fragment>
         );
 
-    } else if (props.burgerElements.length !== 0) {
-        text = "Your burger ready!";
+    } else if (!props.isAuthorized) {
+
+        text = "Need authorization";
+
+        buttons = (
+            <React.Fragment>
+                <ControlButton clicked={() => nextAction(props.nextActions.login)}
+                               className={firstButtonClass}>Login</ControlButton>
+                <ControlButton clicked={() => nextAction(props.nextActions.register)}
+                               className={secondButtonClass}>Register</ControlButton>
+            </React.Fragment>
+        );
     }
 
     return (

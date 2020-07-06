@@ -28,13 +28,6 @@ export const updatePriceState = (priceState) => {
     }
 };
 
-export const updateBurgerElementId = (burgerElementId) => {
-    return {
-        type: actionTypes.UPDATE_BURGER_ELEMENT_ID,
-        burgerElementId: burgerElementId
-    }
-};
-
 export const updateValidationConstraints = (validationConstraints) => {
     return {
         type: actionTypes.UPDATE_VALIDATION_CONSTRAINTS,
@@ -46,8 +39,7 @@ const fetchBurgerSuccess = (data) => {
     return {
         type: actionTypes.LOAD_BURGER_SUCCESS,
         burgerElements: JSON.parse(data.ingredients),
-        totalPrice: data.totalPrice,
-        burgerElementId: data.burgerElementId
+        totalPrice: data.totalPrice
     };
 };
 

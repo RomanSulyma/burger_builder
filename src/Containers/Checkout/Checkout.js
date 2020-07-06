@@ -17,11 +17,11 @@ const Checkout = (props) => {
         register: "register"
     };
 
-    const [enabledState, enabledStateUpdate] = useState(false);
+    const [enabledState, enabledStateUpdate] = useState(true);
     const [errorState, errorStateUpdate] = useState(null);
 
     useEffect(() => {
-        if (props.burgerElements.length === 0) {
+        if (!props.burgerLoaded) {
             props.fetchBurger();
         }
     }, []);
@@ -42,7 +42,6 @@ const Checkout = (props) => {
 
         burgerForm.set('ingredients', JSON.stringify(props.burgerElements));
         burgerForm.set('totalPrice', props.priceState);
-        burgerForm.set('burgerElementId', props.burgerElementId);
 
         await buyBurger(props.token, Object.fromEntries(burgerForm));
         props.visibilityUpdate();
@@ -143,8 +142,7 @@ const Checkout = (props) => {
                        updateValidationConstraints={props.updateValidationConstraints}
                        visibilityUpdate={props.visibilityUpdate} enabledState={enabledState}
                        enabledStateUpdate={enabledStateUpdate} error={errorState} confirm={nextAction()}/>
-                <BurgerElements ingredients={props.burgerElements} clicked={() => {
-                }}/>
+                <BurgerElements ingredients={props.burgerElements} clicked={() => {}}/>
                 <CheckoutPanel burgerElements={props.burgerElements} isAuthorized={props.isAuthorized}
                                validationConstraints={props.validationConstraints}
                                visibilityUpdate={props.visibilityUpdate}
@@ -167,7 +165,6 @@ const mapStateToProps = (state) => {
         visibilityState: state.visibilityState,
         burgerElements: state.burgerElements,
         priceState: state.priceState,
-        burgerElementId: state.burgerElementId,
         isAuthorized: state.isAuthorized,
         validationConstraints: state.validationConstraints,
         nextButtonAction: state.nextButtonAction,

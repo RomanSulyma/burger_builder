@@ -1,7 +1,7 @@
 .CheckoutButton {
     display: inline-block;
     width: 10%;
-    margin-top: 1%;
+    margin-top: 2%;
     margin-left: 37%;
     border: 3px solid transparent;
     border-top: 3px solid #C0C0C0;
@@ -16,11 +16,14 @@
 
 .CheckoutButton:hover {
     border: 3px solid #d58c05;
-
 }
 
-.CheckoutButton:last-of-type {
+.CheckoutButtonSecond {
     margin-left: 5%;
+}
+
+.CheckoutButtonSingle {
+    margin-left: 45%;
 }
 
 .CheckoutPanel {
@@ -30,7 +33,7 @@
 .CheckoutPanel p {
     display: block;
     height: 50px;
-    font-size: 300%;
+    font-size: calc(0.7em + 2vw);
     margin: 1% 0 1% 30%;
     text-align: center;
     width: 40%;

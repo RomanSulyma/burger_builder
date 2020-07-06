@@ -25,15 +25,11 @@ export const buyBurger = async (token, burgerForm) => {
 };
 
 export const signIn = async (signInForm) => {
-    const data = await axiosInstance.post('/auth/signin', signInForm);
-    console.log(data);
-    return data;
+    return await axiosInstance.post('/auth/signin', signInForm);
 };
 
 export const signUp = async (signUpForm) => {
-    const data = await axiosInstance.post('/auth/signup', signUpForm);
-    console.log(data);
-    return data;
+    return  await axiosInstance.post('/auth/signup', signUpForm);
 };
 
 export const getIngredients = async () => {
