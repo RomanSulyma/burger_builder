@@ -7,13 +7,23 @@ import {BrowserRouter} from "react-router-dom";
 import Checkout from "../Checkout/Checkout";
 import Orders from "../Orders/Orders";
 import * as actionCreators from '../../Redux/ActionCreators';
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import errorHandler from "../../HOC/ErrorHandler";
 
-const Layout = (props) => {
+const Layout = () => {
+
+    const dispatch = useDispatch();
+
+    const fetchValidationConstraints = () => dispatch(actionCreators.fetchValidationConstraints());
+    const visibilityUpdate = () => dispatch(actionCreators.updateVisibility());
+    const authorizationUpdate = (isAuthorized) => dispatch(actionCreators.authorizationUpdate(isAuthorized));
+    const updateNextButtonActions = (action) => dispatch(actionCreators.updateNextButtonAction(action));
+    const tokenUpdate = (token) => dispatch(actionCreators.tokenUpdate(token));
+
+    const visibilityState = useSelector((state) => state.visibilityState);
 
     useEffect(() => {
-        props.fetchValidationConstraints();
+        fetchValidationConstraints();
         checkAuthorization();
     }, []);
 
@@ -42,15 +52,14 @@ const Layout = (props) => {
     };
 
     const authorize = (token) => {
-        props.authorizationUpdate(true);
-        props.tokenUpdate(`Bearer ${token}`);
+        authorizationUpdate(true);
+        tokenUpdate(`Bearer ${token}`);
     };
 
     const deAuthorize = () => {
-        console.log("deathorize");
-        props.authorizationUpdate(false);
-        props.tokenUpdate(null);
-        props.updateNextButtonActions(nextActions.login);
+        authorizationUpdate(false);
+        tokenUpdate(null);
+        updateNextButtonActions(nextActions.login);
 
         localStorage.removeItem('token');
         localStorage.removeItem('expirationTime');
@@ -60,7 +69,7 @@ const Layout = (props) => {
         <BrowserRouter>
             <div>
                 <Toolbar/>
-                <Backdrop visibilityState={props.visibilityState} visibilityUpdate={props.visibilityUpdate}/>
+                <Backdrop visibilityState={visibilityState} visibilityUpdate={visibilityUpdate}/>
                 <Switch>
                     <Route path="/burger" render={() => <BurgerBuilder/>}/>
                     <Route path="/checkout" render={() => <Checkout nextActions={nextActions} deAuthorize={deAuthorize}
@@ -73,22 +82,4 @@ const Layout = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        burgerLoaded: state.burgerLoaded,
-        visibilityState: state.visibilityState
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchValidationConstraints: () => dispatch(actionCreators.fetchValidationConstraints()),
-        updateBurgerLoaded: (burgerLoaded) => dispatch(actionCreators.updateBurgerLoaded(burgerLoaded)),
-        visibilityUpdate: () => dispatch(actionCreators.updateVisibility()),
-        authorizationUpdate: (isAuthorized) => dispatch(actionCreators.authorizationUpdate(isAuthorized)),
-        updateNextButtonActions: (action) => dispatch(actionCreators.updateNextButtonAction(action)),
-        tokenUpdate: (token) => dispatch(actionCreators.tokenUpdate(token))
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(errorHandler(Layout));
+export default errorHandler(Layout);

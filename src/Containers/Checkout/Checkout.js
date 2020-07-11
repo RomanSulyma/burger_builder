@@ -4,7 +4,7 @@ import Popup from "../../Components/Popup/Popup";
 import CheckoutPanel from "../../Components/CheckoutPanel/CheckoutPanel";
 import Loader from "../../Components/Loader/Loader";
 import * as actionCreators from '../../Redux/ActionCreators';
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {buyBurger, signIn, signUp} from "../../Axios/axiosRequests";
 import errorHandler from "../../HOC/ErrorHandler";
 import {withRouter} from "react-router";
@@ -20,9 +20,27 @@ const Checkout = (props) => {
     const [enabledState, enabledStateUpdate] = useState(true);
     const [errorState, errorStateUpdate] = useState(null);
 
+    const dispatch = useDispatch();
+
+    const visibilityUpdate = () => dispatch(actionCreators.updateVisibility());
+    const fetchBurger = () => dispatch(actionCreators.fetchBurger());
+    const updatePopupFields = (popupFields) => dispatch(actionCreators.updatePopupFields(popupFields));
+    const updateNextButtonActions = (action) => dispatch(actionCreators.updateNextButtonAction(action));
+    const updateValidationConstraints = (validationConstraints) => dispatch(actionCreators.updateValidationConstraints(validationConstraints));
+
+    const burgerLoaded = useSelector((state) => state.burgerLoaded);
+    const visibilityState = useSelector((state) => state.visibilityState);
+    const burgerElements = useSelector((state) => state.burgerElements);
+    const priceState = useSelector((state) => state.priceState);
+    const isAuthorized = useSelector((state) => state.isAuthorized);
+    const validationConstraints = useSelector((state) => state.validationConstraints);
+    const nextButtonAction = useSelector((state) => state.nextButtonAction);
+    const token = useSelector((state) => state.token);
+    const currentPopupField = useSelector((state) => state.popupFields);
+
     useEffect(() => {
-        if (!props.burgerLoaded) {
-            props.fetchBurger();
+        if (!burgerLoaded) {
+            fetchBurger();
         }
     }, []);
 
@@ -34,23 +52,23 @@ const Checkout = (props) => {
     const confirmBuy = async () => {
         let burgerForm = new Map();
 
-        props.validationConstraints
+        validationConstraints
             .filter(constraint => constraint.fieldType === popupFields.order)
             .forEach(constraint => {
                 burgerForm.set(constraint.placeholder, constraint.value);
             });
 
-        burgerForm.set('ingredients', JSON.stringify(props.burgerElements));
-        burgerForm.set('totalPrice', props.priceState);
+        burgerForm.set('ingredients', JSON.stringify(burgerElements));
+        burgerForm.set('totalPrice', priceState);
 
-        await buyBurger(props.token, Object.fromEntries(burgerForm));
-        props.visibilityUpdate();
+        await buyBurger(token, Object.fromEntries(burgerForm));
+        visibilityUpdate();
     };
 
     const login = async () => {
         let signInForm = new Map();
 
-        props.validationConstraints
+        validationConstraints
             .filter(constraint => constraint.fieldType === popupFields.login)
             .forEach(constraint => signInForm.set(constraint.placeholder, constraint.value));
 
@@ -64,7 +82,7 @@ const Checkout = (props) => {
 
             if (token !== null) {
                 props.authorize(token);
-                props.visibilityUpdate();
+                visibilityUpdate();
 
                 errorStateUpdate(null);
 
@@ -82,7 +100,7 @@ const Checkout = (props) => {
     const register = async () => {
         let signUpForm = new Map();
 
-        props.validationConstraints
+        validationConstraints
             .filter(constraint => constraint.fieldType === popupFields.register)
             .forEach(constraint => signUpForm.set(constraint.placeholder, constraint.value));
 
@@ -96,7 +114,7 @@ const Checkout = (props) => {
 
             if (token !== null) {
                 props.authorize(token);
-                props.visibilityUpdate();
+                visibilityUpdate();
 
                 errorStateUpdate(null);
 
@@ -116,37 +134,37 @@ const Checkout = (props) => {
     };
 
     const nextAction = () => {
-        switch (props.nextButtonAction) {
+        switch (nextButtonAction) {
             case props.nextActions.login :
-                props.updatePopupFields(popupFields.login);
+                updatePopupFields(popupFields.login);
                 return login;
             case props.nextActions.register :
-                props.updatePopupFields(popupFields.register);
+                updatePopupFields(popupFields.register);
                 return register;
             case props.nextActions.order :
-                props.updatePopupFields(popupFields.order);
+                updatePopupFields(popupFields.order);
                 return confirmBuy;
             default :
-                props.updatePopupFields(popupFields.login);
+                updatePopupFields(popupFields.login);
                 return login;
         }
     };
 
     let mainScreen = <Loader/>;
 
-    if (props.burgerLoaded) {
+    if (burgerLoaded) {
         mainScreen = (
             <React.Fragment>
-                <Popup visibilityState={props.visibilityState} popupFields={props.popupFields}
-                       validationConstraints={props.validationConstraints}
-                       updateValidationConstraints={props.updateValidationConstraints}
-                       visibilityUpdate={props.visibilityUpdate} enabledState={enabledState}
+                <Popup visibilityState={visibilityState} popupFields={currentPopupField}
+                       validationConstraints={validationConstraints}
+                       updateValidationConstraints={updateValidationConstraints}
+                       visibilityUpdate={visibilityUpdate} enabledState={enabledState}
                        enabledStateUpdate={enabledStateUpdate} error={errorState} confirm={nextAction()}/>
-                <BurgerElements ingredients={props.burgerElements} clicked={() => {}}/>
-                <CheckoutPanel burgerElements={props.burgerElements} isAuthorized={props.isAuthorized}
-                               validationConstraints={props.validationConstraints}
-                               visibilityUpdate={props.visibilityUpdate}
-                               updateNextButtonActions={props.updateNextButtonActions}
+                <BurgerElements ingredients={burgerElements} clicked={() => {}}/>
+                <CheckoutPanel burgerElements={burgerElements} isAuthorized={isAuthorized}
+                               validationConstraints={validationConstraints}
+                               visibilityUpdate={visibilityUpdate}
+                               updateNextButtonActions={updateNextButtonActions}
                                toBurgerBuilder={toBurgerBuilder} nextActions={props.nextActions}/>
             </React.Fragment>
         );
@@ -159,30 +177,4 @@ const Checkout = (props) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        burgerLoaded: state.burgerLoaded,
-        visibilityState: state.visibilityState,
-        burgerElements: state.burgerElements,
-        priceState: state.priceState,
-        isAuthorized: state.isAuthorized,
-        validationConstraints: state.validationConstraints,
-        nextButtonAction: state.nextButtonAction,
-        token: state.token,
-        popupFields: state.popupFields
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        visibilityUpdate: () => dispatch(actionCreators.updateVisibility()),
-        fetchBurger: () => dispatch(actionCreators.fetchBurger()),
-        authorizationUpdate: (isAuthorized) => dispatch(actionCreators.authorizationUpdate(isAuthorized)),
-        tokenUpdate: (token) => dispatch(actionCreators.tokenUpdate(token)),
-        updatePopupFields: (popupFields) => dispatch(actionCreators.updatePopupFields(popupFields)),
-        updateNextButtonActions: (action) => dispatch(actionCreators.updateNextButtonAction(action)),
-        updateValidationConstraints: (validationConstraints) => dispatch(actionCreators.updateValidationConstraints(validationConstraints))
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(errorHandler(withRouter(Checkout)));
+export default errorHandler(withRouter(Checkout));
