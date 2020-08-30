@@ -87,7 +87,6 @@ const Checkout = (props) => {
                 errorStateUpdate(null);
 
                 const expirationTimeMills = tokenExpirationTime - Date.now();
-                console.log(expirationTimeMills);
 
                 setTimeout(() => props.deAuthorize(), expirationTimeMills);
 
@@ -119,7 +118,6 @@ const Checkout = (props) => {
                 errorStateUpdate(null);
 
                 const expirationTimeMills = tokenExpirationTime - Date.now();
-                console.log(expirationTimeMills);
 
                 setTimeout(() => props.deAuthorize(), expirationTimeMills);
 

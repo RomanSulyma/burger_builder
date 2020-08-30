@@ -57,8 +57,6 @@ export const authorizationUpdate = (isAuthorized) => {
 
 export const tokenUpdate = (token) => {
 
-    console.log(`token : ${token}`);
-
     return {
         type: actionTypes.TOKEN_UPDATE,
         token: token
@@ -121,7 +119,6 @@ export const fetchAllOrders = () => {
             const response = await getBurger();
 
             if (response.data !== '') {
-                console.log(response.data);
                 dispatch(fetchAllOrdersSuccess(response.data));
             }
 
@@ -152,7 +149,6 @@ export const fetchMyOrders = (token) => {
                 const response = await getOrderCustomer(token);
 
                 if (response.data !== '') {
-                    console.log(response.data);
                     dispatch(fetchMyOrdersSuccess(response.data));
                 }
             } catch (e) {
